@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Terraform jobs:
+  Terraform_jobs:
     runs-on: ubuntu-latest
     steps:
       # Terraform install
