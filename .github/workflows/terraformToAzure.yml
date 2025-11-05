@@ -5,20 +5,18 @@ name: Terraform
 
 # Triggers
 on:
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
+# Jobs
 jobs:
   Terraform_jobs:
     runs-on: ubuntu-latest
     steps:
-      # Terraform install
-      - run: echo "This is Terraform install"
-      # Terraform validate
-      - run: echo "This is Terraform validate"
-      # Terraform plan (to a plan output text file)
-      - run: echo "This is Terraform plan"
-      # Terraform apply after reviewer approves
-      - run: echo "This is Terraform apply"
+      - name: terraform installation
+        uses: hashicorp/setup-terraform@v2.0.3
+      - name: terraform validate
+        run: terraform validate
+      - name: terraform plan
+        run: terraform plan
+      - name: terraform apply
+        run: terraform apply
