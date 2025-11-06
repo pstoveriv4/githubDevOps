@@ -12,9 +12,13 @@ jobs:
   Terraform_validate:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout code repo
+        uses: actions/checkout@v4
       - name: terraform installation
         uses: hashicorp/setup-terraform@v2.0.3
       - name: terraform init
+      # .tfstate file - https://eucfiles.blob.core.windows.net/terraform-state/terraform.tfstate
+      # ADO/terraform/test/main.tf, variables.tf
         run: terraform init
       - name: terraform validate
         run: terraform validate
@@ -28,6 +32,6 @@ jobs:
       - name: terraform init
         run: terraform init
       - name: terraform plan
-        run: terraform plan
+        run: terraform plan -out=tfplan
       - name: terraform apply
         run: terraform apply
