@@ -1,7 +1,7 @@
 # Terraform deployment of Azure resources
 
 # Name
-name: Terraform
+name: Terraform deploy to Azure
 
 # Triggers
 on:
@@ -9,7 +9,7 @@ on:
 
 # Jobs
 jobs:
-  Terraform_jobs:
+  Terraform_preapply:
     runs-on: ubuntu-latest
     steps:
       - name: terraform installation
@@ -18,5 +18,10 @@ jobs:
         run: terraform validate
       - name: terraform plan
         run: terraform plan
+  Terraform_apply:
+    runs-on: ubuntu-latest
+    environment:
+      name: 'Terraform'
+    steps:
       - name: terraform apply
         run: terraform apply
