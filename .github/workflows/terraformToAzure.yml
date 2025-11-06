@@ -9,19 +9,25 @@ on:
 
 # Jobs
 jobs:
-  Terraform_preapply:
+  Terraform_validate:
     runs-on: ubuntu-latest
     steps:
       - name: terraform installation
         uses: hashicorp/setup-terraform@v2.0.3
+      - name: terraform init
+        run: terraform init
       - name: terraform validate
         run: terraform validate
-      - name: terraform plan
-        run: terraform plan
-  Terraform_apply:
+  Terraform_deploy:
     runs-on: ubuntu-latest
     environment:
-      name: 'Terraform'
+      name: Terraform
     steps:
+      - name: terraform installation
+        uses: hashicorp/setup-terraform@v2.0.3
+      - name: terraform init
+        run: terraform init
+      - name: terraform plan
+        run: terraform plan
       - name: terraform apply
         run: terraform apply
