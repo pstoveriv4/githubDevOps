@@ -1,7 +1,6 @@
 name: Run python1 script
 
 on:
-  push: {}
   workflow_dispatch: {}
 
 jobs:

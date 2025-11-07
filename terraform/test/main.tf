@@ -7,11 +7,11 @@ terraform {
     }
   }
   backend "azurerm" {
-    use_azuread_auth = true
-    resource_group_name = "INFR-Prod-East_US-rg"
+    use_azuread_auth     = true
+    resource_group_name  = "INFR-Prod-East_US-rg"
     storage_account_name = "eucfiles"
-    container_name = "terraform-state"
-    key = "terraform.tfstate"
+    container_name       = "terraform-state"
+    key                  = "terraform.tfstate"
   }
 }
 provider "azurerm" {
@@ -26,8 +26,8 @@ resource "azurerm_resource_group" "TF4-rg" {
   name       = "TF4-rg"
   tags = {
     environment = "test"
-    iac = "terraform"
-    dateTime = "250924-1613"
+    iac         = "terraform"
+    dateTime    = "250924-1613"
   }
 }
 
@@ -41,7 +41,7 @@ resource "azurerm_virtual_network" "terraform-vnet" {
   location                = "eastus"
   name                    = "terraform-vnet"
   resource_group_name     = "TF4-rg"
-  tags = {}
+  tags                    = {}
 }
 
 resource "azurerm_subnet" "terraform-subnet" {
