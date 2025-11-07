@@ -50,6 +50,11 @@ jobs:
         uses: actions/checkout@v4
       - name: terraform installation
         uses: hashicorp/setup-terraform@v2.0.3
+      - name: Azure Login
+        #Login in your azure subscription using a service principal (credentials stored as GitHub Secret in repo)
+        uses: azure/login@v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: terraform init
         run: terraform init
       - name: terraform apply
