@@ -19,9 +19,9 @@ jobs:
       - name: checkout code repo
         uses: actions/checkout@v4
       - name: terraform installation
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v2.0.3
         with:
-          terraform_version: 2.1.0
+          terraform_version: 1.13.5
       - name: Azure Login
         #Login in your azure subscription using a service principal (credentials stored as GitHub Secret in repo)
         uses: azure/login@v2.3.0
