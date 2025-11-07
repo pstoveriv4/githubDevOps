@@ -39,6 +39,10 @@ jobs:
   Terraform_deploy:
     needs: Terraform_validate
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform/test
     environment:
       name: Terraform
     steps:
