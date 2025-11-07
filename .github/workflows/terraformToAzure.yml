@@ -11,27 +11,42 @@ on:
 jobs:
   Terraform_validate:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform/test
+    steps:
+      - name: checkout code repo
+        uses: actions/checkout@v4
+      - name: terraform installation
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 2.0.3
+      - name: Azure Login
+        #Login in your azure subscription using a service principal (credentials stored as GitHub Secret in repo)
+        uses: azure/login@v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: terraform init
+        # assumes existing backend configuration in place in main.tf or providers.tf
+        run: terraform init
+      - name: terraform format
+        run: terraform fmt -check
+      - name: terraform validate
+        run: terraform validate
+      - name: terraform plan
+        run: terraform plan -out=tfplan
+  Terraform_deploy:
+    needs: Terraform_validate
+    runs-on: ubuntu-latest
+    environment:
+      name: Terraform
     steps:
       - name: checkout code repo
         uses: actions/checkout@v4
       - name: terraform installation
         uses: hashicorp/setup-terraform@v2.0.3
       - name: terraform init
-      # .tfstate file - https://eucfiles.blob.core.windows.net/terraform-state/terraform.tfstate
-      # ADO/terraform/test/main.tf, variables.tf
         run: terraform init
-      - name: terraform validate
-        run: terraform validate
-  Terraform_deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: Terraform
-    steps:
-      - name: terraform installation
-        uses: hashicorp/setup-terraform@v2.0.3
-      - name: terraform init
-        run: terraform init
-      - name: terraform plan
-        run: terraform plan -out=tfplan
       - name: terraform apply
         run: terraform apply
