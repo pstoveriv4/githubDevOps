@@ -1,0 +1,61 @@
+# Terraform deployment of AWS resources
+
+# Name
+name: Terraform deploy to AWS
+
+# Triggers
+on:
+  workflow_dispatch:
+
+# Jobs
+jobs:
+  Terraform_validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform/test2
+    steps:
+      - name: checkout code repo
+        uses: actions/checkout@v4
+      - name: terraform installation
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: 1.13.5
+      - name: Azure Login
+        #Login in your azure subscription using a service principal (credentials stored as GitHub Secret in repo)
+        uses: azure/login@v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: terraform init
+        # assumes existing backend configuration in place in main.tf or providers.tf
+        run: terraform init
+      - name: terraform format
+        run: terraform fmt -check
+      - name: terraform validate
+        run: terraform validate
+      - name: terraform plan
+        run: terraform plan -out=tfplan
+  Terraform_deploy:
+    needs: Terraform_validate
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./terraform/test
+    environment:
+      name: Terraform
+    steps:
+      - name: checkout code repo
+        uses: actions/checkout@v4
+      - name: terraform installation
+        uses: hashicorp/setup-terraform@v2.0.3
+      - name: Azure Login
+        #Login in your azure subscription using a service principal (credentials stored as GitHub Secret in repo)
+        uses: azure/login@v2.3.0
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: terraform init
+        run: terraform init
+      - name: terraform apply
+        run: terraform apply -auto-approve
