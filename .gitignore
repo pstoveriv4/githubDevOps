@@ -1,0 +1,16 @@
+# Visual Studio files
+/.vs
+
+# git files
+/.git
+
+# Terraform binaries
+**.terraform/*
+
+# TF state files
+*.tfstate
+*.tfstate.*
+
+# TF crash logs
+crash.log
+crash.*.log
